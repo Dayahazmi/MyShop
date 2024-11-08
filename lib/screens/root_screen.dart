@@ -21,6 +21,7 @@ class _RootScreenState extends State<RootScreen> {
   String selectedCategory = "All";
   final ProductController productController = Get.put(ProductController());
   final CartController cartController = Get.put(CartController());
+  final ProductController controller = Get.find();
 
   void _onItemTapped(int index) {
     setState(() {});
@@ -121,23 +122,33 @@ class _RootScreenState extends State<RootScreen> {
             Expanded(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Wrap(
-                      spacing: 8.0,
-                      children: categories.map((category) {
-                        return ChoiceChip(
-                          label: Text(category),
-                          selected: selectedCategory == category,
-                          onSelected: (isSelected) {
-                            setState(() {
-                              selectedCategory = category;
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ),
+                  Obx(() {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: controller.categories.map((category) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () => controller.changeCategory(category),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: controller.selectedCategory.value ==
+                                          category
+                                      ? Colors.grey
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(category),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }),
                   Expanded(
                     child: Obx(() {
                       if (productController.isLoading.value) {
@@ -152,10 +163,10 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // 2 items per row
+                            crossAxisCount: 2,
                             crossAxisSpacing: 8.0,
                             mainAxisSpacing: 8.0,
-                            childAspectRatio: 0.75, // Adjust as per the design
+                            childAspectRatio: 0.75,
                           ),
                           itemCount: productController.products.length,
                           itemBuilder: (context, index) {
@@ -183,7 +194,7 @@ class _RootScreenState extends State<RootScreen> {
                                           alignment: Alignment.center,
                                           color: Colors.grey[200],
                                           child: const Icon(
-                                            Icons.image, // Placeholder image
+                                            Icons.image,
                                             size: 60,
                                           ),
                                         ),

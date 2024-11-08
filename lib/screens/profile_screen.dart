@@ -222,7 +222,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         onTap: _onItemTapped,
         unselectedItemColor: ColorPalette.accent,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
               icon: Icon(Icons.receipt), label: 'Order History'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),

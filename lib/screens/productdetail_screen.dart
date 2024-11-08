@@ -88,15 +88,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.product.title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
+                        Expanded(
+                          child: Text(
+                            widget.product.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         Text(
                           'RM ${widget.product.price.toStringAsFixed(2)}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(
