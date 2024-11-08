@@ -10,7 +10,8 @@ class MyTextFormField extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.obsecureText,
-    required this.controller, this.validator,
+    required this.controller,
+    this.validator,
   });
 
   @override
@@ -31,7 +32,7 @@ class MyTextFormField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        
+        validator: validator,
       ),
     );
   }

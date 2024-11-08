@@ -7,6 +7,7 @@ import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/productdetail_screen.dart';
 import 'package:myshop/screens/profile_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
+import 'package:myshop/widget/color_palette.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -232,7 +233,7 @@ class _RootScreenState extends State<RootScreen> {
         currentIndex: 0,
         selectedItemColor: Colors.black,
         onTap: _onItemTapped,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: ColorPalette.accent,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
@@ -240,6 +241,7 @@ class _RootScreenState extends State<RootScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
+      backgroundColor: ColorPalette.background,
     );
   }
 }

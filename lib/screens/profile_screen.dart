@@ -7,6 +7,7 @@ import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/login_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/widget/color_palette.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,8 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final CartController cartController = Get.put(CartController());
   void _onItemTapped(int index) {
     setState(() {});
-
-    // Navigate to the corresponding page
     switch (index) {
       case 0:
         Navigator.pushReplacement(
@@ -221,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         currentIndex: 2,
         selectedItemColor: Colors.black,
         onTap: _onItemTapped,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: ColorPalette.accent,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
@@ -229,6 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
+      backgroundColor: ColorPalette.background,
     );
   }
 }

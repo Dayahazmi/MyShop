@@ -8,6 +8,7 @@ import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/orderdetail_screen.dart';
 import 'package:myshop/screens/profile_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/widget/color_palette.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -21,21 +22,41 @@ class _OrderScreenState extends State<OrderScreen> {
   final CartController cartController = Get.put(CartController());
 
   void _onItemTapped(int index) {
+    setState(() {});
+
     // Navigate to the corresponding page
     switch (index) {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const RootScreen()),
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                const RootScreen(),
+            transitionDuration: const Duration(seconds: 0),
+            reverseTransitionDuration: const Duration(seconds: 0),
+          ),
         );
         break;
       case 1:
-        // Stay on OrderScreen
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                const OrderScreen(),
+            transitionDuration: const Duration(seconds: 0),
+            reverseTransitionDuration: const Duration(seconds: 0),
+          ),
+        );
         break;
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                const ProfileScreen(),
+            transitionDuration: const Duration(seconds: 0),
+            reverseTransitionDuration: const Duration(seconds: 0),
+          ),
         );
         break;
     }
@@ -174,7 +195,7 @@ class _OrderScreenState extends State<OrderScreen> {
         currentIndex: 1,
         selectedItemColor: Colors.black,
         onTap: _onItemTapped,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: ColorPalette.accent,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
@@ -182,6 +203,7 @@ class _OrderScreenState extends State<OrderScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
+      backgroundColor: ColorPalette.background,
     );
   }
 }
