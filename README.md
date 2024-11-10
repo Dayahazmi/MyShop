@@ -4,7 +4,6 @@ A Flutter project focusing on e-shope inspired by Shopee. In this development i 
 
 ## Incoming Feature
 
-- SignUp
 - Account Setting
 - Mockup Payment
 
