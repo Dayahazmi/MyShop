@@ -5,6 +5,7 @@ class MyTextFormField extends StatelessWidget {
   final bool obsecureText;
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
+  final Widget? icon;
 
   const MyTextFormField({
     super.key,
@@ -12,6 +13,7 @@ class MyTextFormField extends StatelessWidget {
     required this.obsecureText,
     required this.controller,
     this.validator,
+    this.icon,
   });
 
   @override
@@ -31,8 +33,8 @@ class MyTextFormField extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
+          suffixIcon: icon,
         ),
-        validator: validator,
       ),
     );
   }

@@ -1,9 +1,7 @@
-import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:myshop/product/controller/register_controller.dart';
 import 'package:myshop/screens/login_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
 import 'package:myshop/user_auth/firebase/auth_services.dart';
@@ -23,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuthService _auth = FirebaseAuthService();
+  bool passwordVisible = false;
 
   @override
   void dispose() {
@@ -106,6 +105,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hintText: 'Password',
                           obsecureText: true,
                           controller: _passwordController,
+                          icon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            icon: Icon(passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
                         ),
                       ],
                     ),
