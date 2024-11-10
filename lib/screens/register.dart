@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myshop/product/controller/register_controller.dart';
 import 'package:myshop/screens/login_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/user_auth/firebase/auth_services.dart';
 import 'package:myshop/widget/button.dart';
 import 'package:myshop/widget/color_palette.dart';
 import 'package:myshop/widget/textformfield.dart';
@@ -16,10 +19,19 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,28 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               text: "Register",
                               color: const Color(0XFF839788),
                               onPress: () {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  final controller =
-                                      Get.find<RegisterController>();
-                                  controller.saveRegister(
-                                    _name.text,
-                                    _emailController.text,
-                                    _passwordController.text,
-                                  );
-                                  Navigator.pushReplacement(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder:
-                                          (context, animation1, animation2) =>
-                                              const RootScreen(),
-                                      transitionDuration:
-                                          const Duration(seconds: 0),
-                                      reverseTransitionDuration:
-                                          const Duration(seconds: 0),
-                                    ),
-                                  );
-                                }
+                                _signup();
                               },
                             ),
                           ),
@@ -143,5 +134,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       backgroundColor: ColorPalette.background,
     );
+  }
+
+  void _signup() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signUp(email, password);
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) => RootScreen(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      );
+    } else {
+      if (kDebugMode) {
+        print('Sign up failed');
+      }
+    }
   }
 }

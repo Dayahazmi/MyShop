@@ -1,17 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshop/screens/register.dart';
 import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/user_auth/firebase/auth_services.dart';
 import 'package:myshop/widget/button.dart';
 import 'package:myshop/widget/color_palette.dart';
 import 'package:myshop/widget/textformfield.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuthService _auth = FirebaseAuthService();
   final _formKey = GlobalKey<FormState>();
-
-  LoginScreen({super.key});
 
   // Email validation function
   String? validateEmail(String? value) {
@@ -36,6 +45,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -51,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                     style: GoogleFonts.eduNswActFoundation(
                       fontSize: 80,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF73877B),
+                      color: const Color(0xFF73877B),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -88,21 +104,7 @@ class LoginScreen extends StatelessWidget {
                             text: "Login",
                             color: const Color(0XFF839788),
                             onPress: () {
-                              // Trigger validation on form submit
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation1, animation2) =>
-                                            const RootScreen(),
-                                    transitionDuration:
-                                        const Duration(seconds: 0),
-                                    reverseTransitionDuration:
-                                        const Duration(seconds: 0),
-                                  ),
-                                );
-                              }
+                              _signIn();
                             },
                           ),
                         ),
@@ -145,5 +147,25 @@ class LoginScreen extends StatelessWidget {
       ),
       backgroundColor: ColorPalette.background,
     );
+  }
+
+  void _signIn() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signUp(email, password);
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) => RootScreen(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      );
+    } else {
+      if (kDebugMode) {
+        print('Sign up failed');
+      }
+    }
   }
 }
