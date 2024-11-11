@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyTextFormField extends StatelessWidget {
   final String hintText;
-  final bool obsecureText;
+  final bool obscureText;
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
   final Widget? icon;
@@ -10,7 +10,7 @@ class MyTextFormField extends StatelessWidget {
   const MyTextFormField({
     super.key,
     required this.hintText,
-    required this.obsecureText,
+    required this.obscureText,
     required this.controller,
     this.validator,
     this.icon,
@@ -25,7 +25,7 @@ class MyTextFormField extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
-        obscureText: obsecureText,
+        obscureText: obscureText,
         decoration: InputDecoration(
           fillColor: Colors.grey[100],
           filled: true,

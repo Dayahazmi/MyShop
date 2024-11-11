@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshop/screens/register.dart';
-import 'package:myshop/screens/root_screen.dart';
-import 'package:myshop/user_auth/firebase/auth_services.dart';
+
 import 'package:myshop/widget/button.dart';
 import 'package:myshop/widget/color_palette.dart';
 import 'package:myshop/widget/textformfield.dart';
+import 'package:myshop/product/controller/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -19,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuthService _auth = FirebaseAuthService();
+  final AuthController authController = Get.put(AuthController());
   bool passwordVisible = false;
 
   @override
@@ -58,22 +59,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     MyTextFormField(
                       hintText: 'email@gmail.com',
-                      obsecureText: false,
+                      obscureText: false,
                       controller: _emailController,
                     ),
                     MyTextFormField(
                       hintText: '*********',
-                      obsecureText: passwordVisible,
+                      obscureText: !passwordVisible, // corrected spelling here
                       controller: _passwordController,
                       icon: IconButton(
+                        icon: Icon(
+                          passwordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                         onPressed: () {
                           setState(() {
                             passwordVisible = !passwordVisible;
                           });
                         },
-                        icon: Icon(passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
                       ),
                     ),
                   ],
@@ -88,7 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: "Login",
                           color: const Color(0XFF839788),
                           onPress: () {
-                            _signIn();
+                            authController.signIn(
+                                context,
+                                _emailController.text,
+                                _passwordController.text);
                           },
                         ),
                       ),
@@ -130,25 +136,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       backgroundColor: ColorPalette.background,
     );
-  }
-
-  void _signIn() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    User? user = await _auth.signIn(email, password);
-    if (user != null) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) => RootScreen(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      );
-    } else {
-      if (kDebugMode) {
-        print('Sign In failed');
-      }
-    }
   }
 }

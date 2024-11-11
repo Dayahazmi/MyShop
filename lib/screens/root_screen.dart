@@ -7,6 +7,7 @@ import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/productdetail_screen.dart';
 import 'package:myshop/screens/profile_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
 import 'package:myshop/widget/color_palette.dart';
 
 class RootScreen extends StatefulWidget {
@@ -25,41 +26,18 @@ class _RootScreenState extends State<RootScreen> {
 
   void _onItemTapped(int index) {
     setState(() {});
-
-    // Navigate to the corresponding page
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const RootScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            reverseTransitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const RootScreen());
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const OrderScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            reverseTransitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const OrderScreen());
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const ProfileScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            reverseTransitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const ProfileScreen());
         break;
     }
   }
@@ -79,15 +57,8 @@ class _RootScreenState extends State<RootScreen> {
                     size: 30,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            const AddToCartScreen(),
-                        transitionDuration: const Duration(seconds: 0),
-                        reverseTransitionDuration: const Duration(seconds: 0),
-                      ),
-                    );
+                    AppNavigator.pushReplacementWithoutAnimation(
+                        context, const AddToCartScreen());
                   },
                 ),
                 if (cartController.itemCount.value > 0)
@@ -173,13 +144,11 @@ class _RootScreenState extends State<RootScreen> {
                             final product = productController.products[index];
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(product: product),
-                                  ),
-                                );
+                                AppNavigator.pushReplacementWithoutAnimation(
+                                    context,
+                                    ProductDetailScreen(
+                                      product: product,
+                                    ));
                               },
                               child: Card(
                                 elevation: 3,

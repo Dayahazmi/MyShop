@@ -4,6 +4,7 @@ import 'package:myshop/product/controller/address_controller.dart';
 import 'package:myshop/screens/add_address.dart';
 import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/profile_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
 
 class AddressListScreen extends StatefulWidget {
   const AddressListScreen({super.key});
@@ -24,25 +25,14 @@ class _AddressListScreenState extends State<AddressListScreen> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               if (fromCart) {
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) =>
-                        const AddToCartScreen(),
-                    transitionDuration: const Duration(seconds: 0),
-                    reverseTransitionDuration: const Duration(seconds: 0),
-                  ),
-                ); // Kembali ke Cart Screen (Screen C)
+                AppNavigator.pushReplacementWithoutAnimation(context,
+                    const AddToCartScreen()); // Kembali ke Cart Screen (Screen C)
               } else {
-                Navigator.pushReplacement(
+                AppNavigator.pushReplacementWithoutAnimation(
                   context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) =>
-                        const ProfileScreen(),
-                    transitionDuration: const Duration(seconds: 0),
-                    reverseTransitionDuration: const Duration(seconds: 0),
-                  ),
-                ); // Kembali ke screen sebelumnya (secara lalai Profile Screen, Screen B)
+                  const ProfileScreen(),
+                );
+                // Kembali ke screen sebelumnya (secara lalai Profile Screen, Screen B)
               }
             }),
         title: const Text('Address'),

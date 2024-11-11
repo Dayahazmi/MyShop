@@ -6,6 +6,7 @@ import 'package:myshop/product/controller/order_controller.dart';
 import 'package:myshop/screens/address_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
 
 class AddToCartScreen extends StatefulWidget {
   const AddToCartScreen({super.key});
@@ -26,14 +27,8 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) =>
-                        const RootScreen(),
-                    transitionDuration: const Duration(seconds: 0),
-                    reverseTransitionDuration: const Duration(seconds: 0),
-                  ));
+              AppNavigator.pushReplacementWithoutAnimation(
+                  context, const RootScreen());
             }),
         title: const Text('Cart'),
       ),
@@ -136,18 +131,10 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Navigator.pushReplacement(
+                            AppNavigator.pushReplacementWithoutAnimation(
                               context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation1, animation2) =>
-                                        const AddressListScreen(),
-                                settings: const RouteSettings(
-                                    arguments: {'fromCart': true}),
-                                transitionDuration: const Duration(seconds: 0),
-                                reverseTransitionDuration:
-                                    const Duration(seconds: 0),
-                              ),
+                              const AddressListScreen(),
+                              arguments: {'fromCart': true},
                             );
                           },
                           icon: Icon(

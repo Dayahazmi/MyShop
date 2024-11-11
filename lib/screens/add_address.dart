@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myshop/product/controller/address_controller.dart';
 import 'package:myshop/product/model/address_model.dart';
 import 'package:myshop/screens/address_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
 import 'package:myshop/widget/textformfield.dart';
 
 class AddAddressScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class AddAddressScreen extends StatelessWidget {
                   MyTextFormField(
                     hintText: "Street",
                     controller: _streetController,
-                    obsecureText: false,
+                    obscureText: false,
                     validator: (value) =>
                         value?.isEmpty ?? true ? 'Please enter Street' : null,
                   ),
@@ -46,7 +47,7 @@ class AddAddressScreen extends StatelessWidget {
                   MyTextFormField(
                     hintText: "City",
                     controller: _cityController,
-                    obsecureText: false,
+                    obscureText: false,
                     validator: (value) =>
                         value?.isEmpty ?? true ? 'Please enter City' : null,
                   ),
@@ -54,7 +55,7 @@ class AddAddressScreen extends StatelessWidget {
                   MyTextFormField(
                     hintText: "Post",
                     controller: _postalCodeController,
-                    obsecureText: false,
+                    obscureText: false,
                     validator: (value) =>
                         value?.isEmpty ?? true ? 'Please enter City' : null,
                   ),
@@ -62,7 +63,7 @@ class AddAddressScreen extends StatelessWidget {
                   MyTextFormField(
                     hintText: "State",
                     controller: _stateController,
-                    obsecureText: false,
+                    obscureText: false,
                     validator: (value) =>
                         value?.isEmpty ?? true ? 'Please enter state' : null,
                   ),
@@ -81,15 +82,9 @@ class AddAddressScreen extends StatelessWidget {
                               state: _stateController.text,
                             ),
                           );
-                          Navigator.pushReplacement(
+                          AppNavigator.pushReplacementWithoutAnimation(
                             context,
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation1, animation2) =>
-                                  const AddressListScreen(),
-                              transitionDuration: const Duration(seconds: 0),
-                              reverseTransitionDuration:
-                                  const Duration(seconds: 0),
-                            ),
+                            const AddressListScreen(),
                           );
                         }
                       },

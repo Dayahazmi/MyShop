@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myshop/product/controller/auth_controller.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/screens/address_screen.dart';
 import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/login_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
 import 'package:myshop/widget/color_palette.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,41 +21,22 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final CartController cartController = Get.put(CartController());
+  final AuthController authController = Get.put(AuthController());
+
   void _onItemTapped(int index) {
     setState(() {});
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const RootScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            reverseTransitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const RootScreen());
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const OrderScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            reverseTransitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const OrderScreen());
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const ProfileScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            reverseTransitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const ProfileScreen());
         break;
     }
   }
@@ -73,15 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     size: 30,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            const AddToCartScreen(),
-                        transitionDuration: const Duration(seconds: 0),
-                        reverseTransitionDuration: const Duration(seconds: 0),
-                      ),
-                    );
+                    AppNavigator.pushReplacementWithoutAnimation(
+                        context, const AddToCartScreen());
                   },
                 ),
                 if (cartController.itemCount.value > 0)
@@ -149,22 +125,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                ListTile(
-                  leading: const Icon(Icons.security),
-                  title: const Text('Account & Security'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            const AddressListScreen(),
-                        transitionDuration: const Duration(seconds: 0),
-                        reverseTransitionDuration: const Duration(seconds: 0),
-                      ),
-                    );
-                  },
-                ),
                 // Addresses Button
                 const SizedBox(height: 5),
                 ListTile(
@@ -172,15 +132,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: const Text('Addresses'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            const AddressListScreen(),
-                        transitionDuration: const Duration(seconds: 0),
-                        reverseTransitionDuration: const Duration(seconds: 0),
-                      ),
-                    );
+                    AppNavigator.pushReplacementWithoutAnimation(
+                        context, const AddressListScreen());
                   },
                 ),
                 const SizedBox(
@@ -191,16 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 50,
                   child: TextButton(
                     onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                              LoginScreen(),
-                          transitionDuration: const Duration(seconds: 0),
-                          reverseTransitionDuration: const Duration(seconds: 0),
-                        ),
-                      );
+                      authController.signOut(context);
                     },
                     child: Text(
                       'Log Out',
@@ -211,7 +155,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-
                 // Logout Button
               ],
             ),

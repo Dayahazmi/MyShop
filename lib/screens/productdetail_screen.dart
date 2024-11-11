@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/product/model/prodect_model.dart';
 import 'package:myshop/screens/addtocart.dart';
+import 'package:myshop/widget/appnavigator.dart';
 import 'package:myshop/widget/bottomsheet.dart';
 import 'package:myshop/widget/button.dart';
 
@@ -34,15 +35,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     size: 30,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            const AddToCartScreen(),
-                        transitionDuration: const Duration(seconds: 0),
-                        reverseTransitionDuration: const Duration(seconds: 0),
-                      ),
-                    );
+                    AppNavigator.pushReplacementWithoutAnimation(
+                        context, const AddToCartScreen());
                   },
                 ),
                 if (cartController.itemCount.value > 0)

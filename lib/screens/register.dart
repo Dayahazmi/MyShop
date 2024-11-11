@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myshop/screens/login_screen.dart';
-import 'package:myshop/screens/root_screen.dart';
-import 'package:myshop/user_auth/firebase/auth_services.dart';
+import 'package:myshop/widget/appnavigator.dart';
 import 'package:myshop/widget/button.dart';
 import 'package:myshop/widget/color_palette.dart';
 import 'package:myshop/widget/textformfield.dart';
+import 'package:myshop/product/controller/auth_controller.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,16 +18,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuthService _auth = FirebaseAuthService();
+  final AuthController authController = AuthController();
   bool passwordVisible = false;
-
-  @override
-  void dispose() {
-    _name.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: SingleChildScrollView(
             child: Center(
           child: Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(25.0),
               child: Form(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -66,17 +56,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation1, animation2) =>
-                                        LoginScreen(),
-                                transitionDuration: const Duration(seconds: 0),
-                                reverseTransitionDuration:
-                                    const Duration(seconds: 0),
-                              ),
-                            );
+                            AppNavigator.pushReplacementWithoutAnimation(
+                                context, LoginScreen());
                           },
                           child: const Text(
                             'please login',
@@ -93,27 +74,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       children: [
                         MyTextFormField(
                           hintText: 'Name',
-                          obsecureText: false,
+                          obscureText: false,
                           controller: _name,
                         ),
                         MyTextFormField(
                           hintText: 'Email',
-                          obsecureText: false,
+                          obscureText: false,
                           controller: _emailController,
                         ),
                         MyTextFormField(
-                          hintText: 'Password',
-                          obsecureText: true,
+                          hintText: '*********',
+                          obscureText:
+                              !passwordVisible, // corrected spelling here
                           controller: _passwordController,
                           icon: IconButton(
+                            icon: Icon(
+                              passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
                             onPressed: () {
                               setState(() {
                                 passwordVisible = !passwordVisible;
                               });
                             },
-                            icon: Icon(passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off),
                           ),
                         ),
                       ],
@@ -129,7 +113,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               text: "Register",
                               color: const Color(0XFF839788),
                               onPress: () {
-                                _signup();
+                                authController.signUp(
+                                    context,
+                                    _emailController.text,
+                                    _passwordController.text);
                               },
                             ),
                           ),
@@ -143,25 +130,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       backgroundColor: ColorPalette.background,
     );
-  }
-
-  void _signup() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    User? user = await _auth.signUp(email, password);
-    if (user != null) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) => RootScreen(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      );
-    } else {
-      if (kDebugMode) {
-        print('Sign up failed');
-      }
-    }
   }
 }
