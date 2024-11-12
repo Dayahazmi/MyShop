@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Text(
                       'MyShop',
                       style: GoogleFonts.eduNswActFoundation(
-                        fontSize: 80,
+                        fontSize: 75,
                         fontWeight: FontWeight.bold,
                         color: ColorPalette.primary,
                       ),

@@ -1,12 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:myshop/product/model/prodect_model.dart';
+import 'package:myshop/screens/address_screen.dart';
+import 'package:myshop/screens/order_screen.dart';
+
+import 'package:myshop/screens/root_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/product/controller/address_controller.dart';
 import 'package:myshop/product/controller/order_controller.dart';
-import 'package:myshop/screens/address_screen.dart';
-import 'package:myshop/screens/order_screen.dart';
-import 'package:myshop/screens/root_screen.dart';
-import 'package:myshop/widget/appnavigator.dart';
 
 class AddToCartScreen extends StatefulWidget {
   const AddToCartScreen({super.key});
@@ -17,7 +20,6 @@ class AddToCartScreen extends StatefulWidget {
 
 class _AddToCartScreenState extends State<AddToCartScreen> {
   final cartController = Get.find<CartController>();
-
   final addressController = Get.find<AddressController>();
 
   @override
@@ -39,54 +41,86 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                   itemCount: cartController.products.length,
                   itemBuilder: (context, index) {
                     final item = cartController.products[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(8),
+                    return Slidable(
+                      key: ValueKey(item.id), // Unique key for each item
+                      startActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              _showEditDialog(context, cartController, item);
+                            },
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            icon: Icons.edit,
+                            label: 'Edit',
+                          ),
+                        ],
+                      ),
+                      endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              // Add your delete functionality here
+                              cartController.deleteProduct(item);
+                            },
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child:
+                                    const Icon(Icons.image, color: Colors.grey),
                               ),
-                              child:
-                                  const Icon(Icons.image, color: Colors.grey),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Qty: ${item.quantity}',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 14,
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Qty: ${item.quantity}',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 14,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text(
-                              'RM ${item.total.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                              Text(
+                                'RM ${item.total.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -204,6 +238,56 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
               ),
             ],
           )),
+    );
+  }
+
+  void _showEditDialog(
+      BuildContext context, CartController cartController, Product item) {
+    final titleController = TextEditingController(text: item.title);
+    final quantityController =
+        TextEditingController(text: item.quantity.toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Edit Item"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: "Title"),
+              ),
+              TextField(
+                controller: quantityController,
+                decoration: InputDecoration(labelText: "Quantity"),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Save"),
+              onPressed: () {
+                final newTitle = titleController.text;
+                final newQuantity =
+                    int.tryParse(quantityController.text) ?? item.quantity;
+                cartController.editProduct(item, newTitle, newQuantity);
+                cartController
+                    .calculateItemCount(); // Hitung ulang itemCount setelah edit
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

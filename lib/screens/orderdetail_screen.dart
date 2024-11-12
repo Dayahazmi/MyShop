@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/product/controller/order_controller.dart';
+import 'package:myshop/screens/order_screen.dart';
+import 'package:myshop/widget/appnavigator.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final String orderId;
@@ -27,8 +29,13 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Column(
         children: [
           AppBar(
-            automaticallyImplyLeading: true,
             title: const Text('Order Detail'),
+            leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  AppNavigator.pushReplacementWithoutAnimation(
+                      context, const OrderScreen());
+                }),
           ),
           const Divider(height: 10, color: Colors.grey),
           SingleChildScrollView(

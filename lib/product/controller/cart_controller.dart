@@ -10,7 +10,8 @@ class CartController extends GetxController {
   void addToCart(Product item, int quantity) {
     final existingItem = products.firstWhere(
       (element) => element.id == item.id,
-      orElse: () => Product(id: '', title: '', price: 0, description: ''),
+      orElse: () => Product(
+          id: '', title: '', price: 0, description: '', total: 0, quantity: 0),
     );
 
     if (existingItem.id.isEmpty) {
@@ -44,5 +45,27 @@ class CartController extends GetxController {
   void clearCart() {
     products.clear();
     itemCount.value = 0; // Reset item count
+  }
+
+  void editProduct(Product item, String newTitle, int newQuantity) {
+    final index = products.indexWhere((p) => p.id == item.id);
+    if (index != -1) {
+      products[index] = Product(
+          id: item.id,
+          title: newTitle,
+          quantity: newQuantity,
+          total: item.price * newQuantity,
+          description: item.description,
+          price: item.price);
+    }
+  }
+
+  void calculateItemCount() {
+    itemCount.value = products.fold(0, (sum, item) => sum + item.quantity);
+  }
+
+  void deleteProduct(Product item) {
+    products.remove(item);
+    calculateItemCount(); // Hitung ulang itemCount setelah menghapus item
   }
 }

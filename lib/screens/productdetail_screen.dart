@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/product/model/prodect_model.dart';
 import 'package:myshop/screens/addtocart.dart';
+import 'package:myshop/screens/root_screen.dart';
 import 'package:myshop/widget/appnavigator.dart';
 import 'package:myshop/widget/bottomsheet.dart';
 import 'package:myshop/widget/button.dart';
@@ -23,8 +24,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         title: Text(widget.product.title),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              AppNavigator.pushReplacementWithoutAnimation(
+                  context, const RootScreen());
+            }),
         actions: [
           Obx(() {
             return Stack(

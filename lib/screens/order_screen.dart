@@ -113,25 +113,18 @@ class _OrderScreenState extends State<OrderScreen> {
                       ],
                     ),
                     child: ListTile(
-                      onTap: () =>
-                          Get.to(() => OrderDetailsScreen(orderId: order.id)),
-                      leading: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: List.generate(
-                          order.items.length > 3 ? 3 : order.items.length,
-                          (itemIndex) => Padding(
-                            padding: const EdgeInsets.only(right: 4.0),
-                            child: CircleAvatar(
-                              radius: 12,
-                              backgroundColor: Colors.grey[300],
-                              child: const Icon(
+                      onTap: () => AppNavigator.pushReplacementWithoutAnimation(
+                          context, OrderDetailsScreen(orderId: order.id)),
+                      leading: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.grey[300],
+                        child: order.items.isEmpty
+                            ? const Icon(
                                 Icons.image,
-                                size: 12,
+                                size: 20,
                                 color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                              )
+                            : null,
                       ),
                       title: Text(
                         order.items.map((item) => item.title).join(', '),
@@ -142,24 +135,26 @@ class _OrderScreenState extends State<OrderScreen> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      trailing: Column(
-                        children: [
-                          Text(
-                            'RM ${order.total.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                      trailing: Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'RM ${order.total.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            DateFormat('dd-MM-yyyy').format(order.orderDate),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                            Text(
+                              DateFormat('dd-MM-yyyy').format(order.orderDate),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
