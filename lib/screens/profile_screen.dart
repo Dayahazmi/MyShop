@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +5,6 @@ import 'package:myshop/product/controller/auth_controller.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/screens/address_screen.dart';
 import 'package:myshop/screens/addtocart.dart';
-import 'package:myshop/screens/login_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
 import 'package:myshop/widget/appnavigator.dart';
@@ -102,12 +100,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 16),
                 // Name
                 Text(
-                  'Hidayah Azmi',
+                  '',
                   style: GoogleFonts.roboto(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 3),
                 ),
+                Obx(() => Text(authController.userEmail.value)),
                 const SizedBox(height: 10),
                 Align(
                   alignment:

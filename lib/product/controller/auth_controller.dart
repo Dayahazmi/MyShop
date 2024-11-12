@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myshop/screens/addtocart.dart';
+
+import 'package:myshop/screens/login_screen.dart';
 import 'package:myshop/screens/root_screen.dart';
 import 'package:myshop/widget/appnavigator.dart';
 
@@ -25,6 +26,12 @@ class AuthController extends GetxController {
 
   Future<void> signUp(
       BuildContext context, String email, String password) async {
+    if (password.length < 6) {
+      Get.snackbar('Error', 'Password must be more than 6 characters',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -33,13 +40,22 @@ class AuthController extends GetxController {
       );
       User? user = userCredential.user;
       if (user != null) {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) => RootScreen(),
-            transitionDuration: const Duration(seconds: 0),
-          ),
-        );
+        AppNavigator.pushReplacementWithoutAnimation(
+            context, const LoginScreen());
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        Get.snackbar('Error', 'The email is already in use by another account.',
+            snackPosition: SnackPosition.BOTTOM);
+      } else if (e.code == 'invalid-email') {
+        Get.snackbar('Error', 'The email address is not valid.',
+            snackPosition: SnackPosition.BOTTOM);
+      } else if (e.code == 'weak-password') {
+        Get.snackbar('Error', 'The password is too weak.',
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        Get.snackbar('Error', 'Sign up failed: $e',
+            snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
       if (kDebugMode) {
@@ -58,19 +74,30 @@ class AuthController extends GetxController {
 
       if (userCredential.user != null) {
         userEmail.value = userCredential.user!.email ?? '';
-
         AppNavigator.pushReplacementWithoutAnimation(
             context, const RootScreen());
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Get.snackbar('Error', 'No user found for this email.',
+            snackPosition: SnackPosition.BOTTOM);
+      } else if (e.code == 'wrong-password') {
+        Get.snackbar('Error', 'Incorrect password.',
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        Get.snackbar('Error', 'Sign in failed: $e',
+            snackPosition: SnackPosition.BOTTOM);
+      }
     } catch (e) {
-      print('Sign In failed: $e');
+      if (kDebugMode) {
+        print('Sign In failed: $e');
+      }
     }
   }
 
   Future<void> signOut(BuildContext context) async {
     await _auth.signOut();
     userEmail.value = '';
-    AppNavigator.pushReplacementWithoutAnimation(
-        context, const AddToCartScreen());
+    AppNavigator.pushReplacementWithoutAnimation(context, const LoginScreen());
   }
 }

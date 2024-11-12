@@ -15,7 +15,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController _name = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthController authController = AuthController();
@@ -73,11 +72,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Column(
                       children: [
                         MyTextFormField(
-                          hintText: 'Name',
-                          obscureText: false,
-                          controller: _name,
-                        ),
-                        MyTextFormField(
                           hintText: 'Email',
                           obscureText: false,
                           controller: _emailController,
@@ -114,9 +108,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: const Color(0XFF839788),
                               onPress: () {
                                 authController.signUp(
-                                    context,
-                                    _emailController.text,
-                                    _passwordController.text);
+                                  context,
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
                               },
                             ),
                           ),
