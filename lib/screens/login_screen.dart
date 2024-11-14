@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   'MyShop',
                   style: GoogleFonts.eduNswActFoundation(
-                    fontSize: 80,
+                    fontSize: 60,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF73877B),
                   ),
@@ -56,12 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Column(
                   children: [
                     MyTextFormField(
-                      hintText: 'email@gmail.com',
+                      hintText: 'Enter Your Email',
                       obscureText: false,
                       controller: _emailController,
                     ),
                     MyTextFormField(
-                      hintText: '*********',
+                      hintText: 'Enter Your Password',
                       obscureText: !passwordVisible, // corrected spelling here
                       controller: _passwordController,
                       icon: IconButton(

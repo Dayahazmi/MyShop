@@ -99,12 +99,12 @@ class _RootScreenState extends State<RootScreen> {
                       child: Row(
                         children: controller.categories.map((category) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(6.0),
                             child: GestureDetector(
                               onTap: () => controller.changeCategory(category),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
+                                    horizontal: 16, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: controller.selectedCategory.value ==
                                           category
@@ -179,14 +179,6 @@ class _RootScreenState extends State<RootScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       const SizedBox(height: 4.0),
-                                      Text(
-                                        product.description,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
                                       Text(
                                         'RM ${product.price.toStringAsFixed(2)}',
                                         style: const TextStyle(

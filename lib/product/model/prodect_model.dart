@@ -2,6 +2,8 @@ class Product {
   final String id;
   final String title;
   final String description;
+  final String category;
+  final String brand;
   final double price;
   int quantity;
 
@@ -12,37 +14,35 @@ class Product {
     required this.price,
     this.quantity = 1,
     required double total,
+    required this.category,
+    required this.brand,
   });
 
   double get total => price * quantity;
 
-  // Factory method to create a Product instance from JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'category': category,
+      'brand': brand,
+      'price': price,
+      'quantity': quantity,
+      'total': total,
+    };
+  }
+
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'].toString(), // Convert to String here
+      id: json['id'].toString(),
       title: json['title'] ?? 'No title',
       description: json['description'] ?? 'No description',
       price: (json['price'] ?? 0).toDouble(),
       quantity: json['quantity'] ?? 1,
+      category: json['category'] ?? 'No category',
+      brand: json['brand'] ?? 'No brand',
       total: json['total'] ?? 0,
-    );
-  }
-
-  // Adding the copyWith method
-  Product copyWith({
-    String? id,
-    String? title,
-    String? description,
-    double? price,
-    int? quantity,
-  }) {
-    return Product(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      price: price ?? this.price,
-      quantity: quantity ?? this.quantity,
-      total: total,
     );
   }
 }

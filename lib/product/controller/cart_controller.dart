@@ -11,7 +11,14 @@ class CartController extends GetxController {
     final existingItem = products.firstWhere(
       (element) => element.id == item.id,
       orElse: () => Product(
-          id: '', title: '', price: 0, description: '', total: 0, quantity: 0),
+          id: '',
+          title: '',
+          price: 0,
+          description: '',
+          total: 0,
+          quantity: 0,
+          category: '',
+          brand: ''),
     );
 
     if (existingItem.id.isEmpty) {
@@ -56,7 +63,9 @@ class CartController extends GetxController {
           quantity: newQuantity,
           total: item.price * newQuantity,
           description: item.description,
-          price: item.price);
+          price: item.price,
+          category: '',
+          brand: '');
     }
   }
 

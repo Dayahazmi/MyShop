@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Text(
                       'MyShop',
                       style: GoogleFonts.eduNswActFoundation(
-                        fontSize: 75,
+                        fontSize: 60,
                         fontWeight: FontWeight.bold,
                         color: ColorPalette.primary,
                       ),
@@ -72,12 +72,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Column(
                       children: [
                         MyTextFormField(
-                          hintText: 'Email',
+                          hintText: 'Enter Your Email',
                           obscureText: false,
                           controller: _emailController,
                         ),
                         MyTextFormField(
-                          hintText: '*********',
+                          hintText: 'Enter Your Password',
                           obscureText:
                               !passwordVisible, // corrected spelling here
                           controller: _passwordController,

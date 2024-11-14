@@ -96,6 +96,7 @@ class _OrderScreenState extends State<OrderScreen> {
               itemCount: orderController.orders.length,
               itemBuilder: (context, index) {
                 final order = orderController.orders[index];
+                print(order.items.map((item) => item.title).toList());
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
@@ -122,7 +123,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             ? const Icon(
                                 Icons.image,
                                 size: 20,
-                                color: Colors.white,
+                                color: Colors.black,
                               )
                             : null,
                       ),
@@ -135,26 +136,24 @@ class _OrderScreenState extends State<OrderScreen> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      trailing: Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'RM ${order.total.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'RM ${order.total.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
                             ),
-                            Text(
-                              DateFormat('dd-MM-yyyy').format(order.orderDate),
-                              style: const TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                              ),
+                          ),
+                          Text(
+                            DateFormat('dd-MM-yyyy').format(order.orderDate),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

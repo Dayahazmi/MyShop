@@ -53,7 +53,7 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   MyTextFormField(
-                    hintText: "Post",
+                    hintText: "Postcode",
                     controller: _postalCodeController,
                     obscureText: false,
                     validator: (value) =>

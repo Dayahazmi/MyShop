@@ -1,15 +1,15 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:myshop/product/model/prodect_model.dart';
 import 'package:myshop/screens/address_screen.dart';
 import 'package:myshop/screens/order_screen.dart';
-
 import 'package:myshop/screens/root_screen.dart';
 import 'package:myshop/widget/appnavigator.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:myshop/widget/edit_dialog.dart';
+import 'package:myshop/product/model/prodect_model.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/product/controller/address_controller.dart';
 import 'package:myshop/product/controller/order_controller.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AddToCartScreen extends StatefulWidget {
   const AddToCartScreen({super.key});
@@ -42,13 +42,13 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                   itemBuilder: (context, index) {
                     final item = cartController.products[index];
                     return Slidable(
-                      key: ValueKey(item.id), // Unique key for each item
+                      key: ValueKey(item.id),
                       startActionPane: ActionPane(
                         motion: const ScrollMotion(),
                         children: [
                           SlidableAction(
                             onPressed: (context) {
-                              _showEditDialog(context, cartController, item);
+                              showEditDialog(context, cartController, item);
                             },
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white,
@@ -62,7 +62,6 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                         children: [
                           SlidableAction(
                             onPressed: (context) {
-                              // Add your delete functionality here
                               cartController.deleteProduct(item);
                             },
                             backgroundColor: Colors.red,
@@ -238,56 +237,6 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
               ),
             ],
           )),
-    );
-  }
-
-  void _showEditDialog(
-      BuildContext context, CartController cartController, Product item) {
-    final titleController = TextEditingController(text: item.title);
-    final quantityController =
-        TextEditingController(text: item.quantity.toString());
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Edit Item"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: InputDecoration(labelText: "Title"),
-              ),
-              TextField(
-                controller: quantityController,
-                decoration: InputDecoration(labelText: "Quantity"),
-                keyboardType: TextInputType.number,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("Save"),
-              onPressed: () {
-                final newTitle = titleController.text;
-                final newQuantity =
-                    int.tryParse(quantityController.text) ?? item.quantity;
-                cartController.editProduct(item, newTitle, newQuantity);
-                cartController
-                    .calculateItemCount(); // Hitung ulang itemCount setelah edit
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }
