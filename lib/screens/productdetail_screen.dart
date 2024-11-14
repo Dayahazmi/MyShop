@@ -116,12 +116,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       widget.product.description,
                       style: const TextStyle(color: Colors.black, fontSize: 12),
                     ),
+                    const SizedBox(height: 15),
                     Text(
-                      widget.product.category,
+                      'Category: ${widget.product.category}',
                       style: const TextStyle(color: Colors.black, fontSize: 12),
                     ),
+                    const SizedBox(height: 15),
                     Text(
-                      widget.product.brand,
+                      'Brand: ${widget.product.brand}',
                       style: const TextStyle(color: Colors.black, fontSize: 12),
                     ),
                   ],

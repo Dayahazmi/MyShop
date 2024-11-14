@@ -85,12 +85,12 @@ class AuthController extends GetxController {
         Get.snackbar('Error', 'Incorrect password.',
             snackPosition: SnackPosition.BOTTOM);
       } else {
-        Get.snackbar('Error', 'Sign in failed: $e',
+        Get.snackbar('Error', 'Sign In failed: Please Sign In again',
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Sign In failed: $e');
+        print('Sign In failed: Please Sign In again');
       }
     }
   }
