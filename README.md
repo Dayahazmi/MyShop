@@ -4,8 +4,8 @@ A Flutter project focusing on e-shope inspired by Shopee. In this development i 
 
 <h1> Login </h1>
 
-Username : test@gmail.com
-password : testing
+<p>Username : test@gmail.com</p>
+<p>password : testing</p>
 
 
 
