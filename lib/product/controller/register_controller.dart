@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:myshop/product/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';

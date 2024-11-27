@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:myshop/product/controller/login_controller.dart';
 import 'package:myshop/screens/register.dart';
 
 import 'package:myshop/widget/button.dart';
@@ -19,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthController authController = Get.put(AuthController());
+  final LoginController loginController = Get.put(LoginController());
   bool passwordVisible = false;
 
   @override
@@ -127,6 +130,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     )
                   ],
                 ),
+                const SizedBox(height: 15),
+                SizedBox(
+                  width: 150,
+                  height: 80,
+                  child: IconButton(
+                    iconSize: 25,
+                    icon: Image.asset('assets/Google__G__logo.svg'),
+                    onPressed: () {
+                      loginController.signInWithGoogle(context);
+                    },
+                  ),
+                )
               ],
             ),
           ),

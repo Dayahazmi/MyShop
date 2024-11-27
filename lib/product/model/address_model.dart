@@ -14,20 +14,24 @@ class Address {
   });
 
   Map<String, dynamic> toJson() => {
-    'street': street,
-    'city': city,
-    'postalCode': postalCode,
-    'state': state,
-    'isSelected': isSelected,
-  };
+        'street': street,
+        'city': city,
+        'postalCode': postalCode,
+        'state': state,
+        'isSelected': isSelected,
+      };
+
+  factory Address.empty() {
+    return Address(street: '', city: '', postalCode: '', state: '');
+  }
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
-    street: json['street'],
-    city: json['city'],
-    postalCode: json['postalCode'],
-    state: json['state'],
-    isSelected: json['isSelected'] ?? false,
-  );
+        street: json['street'],
+        city: json['city'],
+        postalCode: json['postalCode'],
+        state: json['state'],
+        isSelected: json['isSelected'] ?? false,
+      );
 
   String get fullAddress => '$street, $city, $postalCode $state';
 }

@@ -5,7 +5,6 @@ import 'package:myshop/product/controller/address_controller.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
 import 'package:myshop/product/controller/order_controller.dart';
 import 'package:myshop/screens/login_screen.dart';
-import 'package:myshop/screens/root_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

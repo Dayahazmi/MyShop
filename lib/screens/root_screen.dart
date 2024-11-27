@@ -18,8 +18,6 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  List<String> categories = ["All", "Smartphones", "Fragrances"];
-  String selectedCategory = "All";
   final ProductController productController = Get.put(ProductController());
   final CartController cartController = Get.put(CartController());
   final ProductController controller = Get.find();
@@ -142,6 +140,8 @@ class _RootScreenState extends State<RootScreen> {
                           itemCount: productController.products.length,
                           itemBuilder: (context, index) {
                             final product = productController.products[index];
+                            final imageUrl = productController
+                                .getImageByTitle(product.title);
                             return GestureDetector(
                               onTap: () {
                                 AppNavigator.pushReplacementWithoutAnimation(
@@ -162,10 +162,24 @@ class _RootScreenState extends State<RootScreen> {
                                         child: Container(
                                           alignment: Alignment.center,
                                           color: Colors.grey[200],
-                                          child: const Icon(
-                                            Icons.image,
-                                            size: 60,
-                                          ),
+                                          child: imageUrl.isNotEmpty
+                                              ? Image.network(
+                                                  imageUrl,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                    return const Icon(
+                                                      Icons.broken_image,
+                                                      size: 25,
+                                                      color: Colors.grey,
+                                                    );
+                                                  },
+                                                )
+                                              : const Icon(
+                                                  Icons.image,
+                                                  size: 25,
+                                                  color: Colors.grey,
+                                                ),
                                         ),
                                       ),
                                       const SizedBox(height: 8.0),

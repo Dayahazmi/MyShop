@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshop/product/controller/auth_controller.dart';
 import 'package:myshop/product/controller/cart_controller.dart';
+import 'package:myshop/product/controller/login_controller.dart';
 import 'package:myshop/screens/address_screen.dart';
 import 'package:myshop/screens/addtocart.dart';
 import 'package:myshop/screens/order_screen.dart';
@@ -20,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final CartController cartController = Get.put(CartController());
   final AuthController authController = Get.put(AuthController());
+  final LoginController loginController = Get.find<LoginController>();
 
   void _onItemTapped(int index) {
     setState(() {});
@@ -92,21 +94,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 const SizedBox(height: 20),
                 // Profile Image
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey,
-                  child: Icon(Icons.person, size: 50, color: Colors.white),
-                ),
+                Obx(() {
+                  return loginController.userPhoto.isNotEmpty
+                      ? CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(loginController.userPhoto.value),
+                          radius: 50,
+                        )
+                      : const Icon(Icons.account_circle, size: 100);
+                }),
                 const SizedBox(height: 16),
                 // Name
-                Text(
-                  '',
-                  style: GoogleFonts.roboto(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 3),
-                ),
-                Obx(() => Text(authController.userEmail.value)),
+                Obx(() {
+                  return Text(
+                    loginController.userName.value,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  );
+                }),
+
                 const SizedBox(height: 10),
                 Align(
                   alignment:

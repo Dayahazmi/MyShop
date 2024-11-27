@@ -25,13 +25,20 @@ class Order {
         'orderDate': orderDate.toIso8601String(),
       };
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
-        id: json['id'],
-        items: (json['items'] as List<dynamic>)
-            .map((item) => Product.fromJson(item))
-            .toList(),
-        deliveryAddress: Address.fromJson(json['deliveryAddress']),
-        total: json['total'],
-        orderDate: DateTime.parse(json['orderDate']),
-      );
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
+      id: json['id'] ?? 'No ID',
+      items: (json['items'] as List<dynamic>?)
+              ?.map((item) => Product.fromJson(item))
+              .toList() ??
+          [],
+      deliveryAddress: json['deliveryAddress'] != null
+          ? Address.fromJson(json['deliveryAddress'])
+          : Address.empty(), // Define an empty Address factory for fallback
+      total: (json['total'] ?? 0).toDouble(),
+      orderDate: json['orderDate'] != null
+          ? DateTime.parse(json['orderDate'])
+          : DateTime.now(),
+    );
+  }
 }

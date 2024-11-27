@@ -6,6 +6,7 @@ class Product {
   final String brand;
   final double price;
   int quantity;
+  final List<String> images;
 
   Product({
     required this.id,
@@ -16,6 +17,7 @@ class Product {
     required double total,
     required this.category,
     required this.brand,
+    required this.images,
   });
 
   double get total => price * quantity;
@@ -42,7 +44,11 @@ class Product {
       quantity: json['quantity'] ?? 1,
       category: json['category'] ?? 'No category',
       brand: json['brand'] ?? 'No brand',
-      total: json['total'] ?? 0,
+      total: (json['total'] ?? 0).toDouble(),
+      images: (json['images'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 }

@@ -79,10 +79,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       alignment: Alignment.center,
                       color: Colors.grey[200],
                       height: 200,
-                      child: const Icon(
-                        Icons.image,
-                        size: 100,
-                      ),
+                      child: widget.product.title.isNotEmpty
+                          ? Image.network(
+                              getImageByTitle(
+                                  widget.product.title, widget.product.images),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.broken_image,
+                                  size: 100,
+                                );
+                              },
+                            )
+                          : const Icon(
+                              Icons.image,
+                              size: 100,
+                            ),
                     ),
                     const SizedBox(height: 15),
                     Row(
@@ -159,5 +171,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         ),
       )),
     );
+  }
+
+  String getImageByTitle(String title, List<String> images) {
+    if (images.isNotEmpty) {
+      return images.first;
+    }
+    return 'https://via.placeholder.com/200';
   }
 }
